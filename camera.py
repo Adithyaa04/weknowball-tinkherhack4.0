@@ -7,7 +7,7 @@ face_cascade = cv2.CascadeClassifier(
     cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
 )
 
-CONFIDENCE_THRESHOLD = 62
+CONFIDENCE_THRESHOLD = 64
 
 def load_model():
     if not os.path.exists("lbph_face_model.xml") or not os.path.exists("label_map.json"):

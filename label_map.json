@@ -4,7 +4,19 @@
     "relation": "Friend"
   },
   "1": {
+    "name": "Aneeja",
+    "relation": "Teacher"
+  },
+  "2": {
+    "name": "Navaneeth",
+    "relation": "Brother"
+  },
+  "3": {
     "name": "Nifidha",
     "relation": "Doctor"
+  },
+  "4": {
+    "name": "Snoopa",
+    "relation": "Physiotherapist"
   }
 }

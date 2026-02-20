@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>My Diary — AlzHelper</title>
+<title>My Diary — remembrance</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"/>
 <style>
   :root {
@@ -313,28 +313,28 @@
 
   <!-- NEW ENTRY FORM -->
   <div class="new-entry-card">
-    <h2>✏️ Write Today's Entry</h2>
+    <h2> Write Today's Entry</h2>
     <form action="/add" method="POST">
       <input
         class="input-title"
         type="text"
         name="title"
-        placeholder="Give your entry a title (optional)"
+        placeholder="Entry Title"
         maxlength="80"
       />
       <textarea
         class="input-text"
         name="text"
-        placeholder="What happened today? How are you feeling? Write anything you like..."
+        placeholder="Write about it..."
         required
       ></textarea>
-      <button class="save-btn" type="submit">💾 Save Entry</button>
+      <button class="save-btn" type="submit"> Save Entry</button>
     </form>
   </div>
 
   <!-- PAST ENTRIES -->
   <div class="entries-header">
-    📖 Past Entries
+     Past Entries
     <span class="entry-count">{{ entries|length }}</span>
   </div>
 

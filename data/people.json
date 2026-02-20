@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "name": "Adithya",
+    "relation": "Friend",
+    "tidbit": "Loud and opinionated. Dont call before 8 am",
+    "last_visit": null,
+    "conversations": []
+  },
+  {
+    "id": 2,
+    "name": "Snoopa",
+    "relation": "Physiotherapist",
+    "tidbit": "Dont crack a joke before sessions. she will crack your hand extra hard",
+    "last_visit": "Saturday, 21 February 2026",
+    "conversations": [
+      {
+        "note": "told me to rest more and do ice baths for stiff joints",
+        "date": "Saturday, 21 February 2026",
+        "time": "05:08 AM"
+      }
+    ]
+  }
+]
