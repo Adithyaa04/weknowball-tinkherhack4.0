@@ -2,7 +2,7 @@
   <img src="img.png" alt="Project Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# ഓർമ്മ-Remembrance
 
 ## Basic Details
 
@@ -16,42 +16,38 @@
 [mention your project hosted link here]
 
 ### Project Description
-[2-3 lines about what your project does]
+ഓർമ്മ (Remembrance) is a supportive application designed to help Alzheimer’s patients manage daily life with confidence. It includes a digital diary, gentle reminders for important tasks, and a face recognition system to identify familiar people. The app aims to reduce confusion, improve independence, and provide emotional reassurance.
 
 ### The Problem statement
-[What problem are you solving?]
+Over 55 million people worldwide live with dementia, facing the same quiet crisis every day — a familiar face without a name, a missed appointment, a routine that simply won't stick. Caregivers carry this burden silently, answering the same questions repeatedly with no tools built to help them. Existing apps are generic, cluttered, and designed for everyone except the people who need them most.
+ഓർമ്മ changes that. With face recognition that puts names back to faces, a personal diary to capture each day, a My People directory of everyone who matters, and Gentle Reminders for medications and appointments all wrapped in a calm, accessible design — Recall gives Alzheimer's patients a quiet, reassuring companion that keeps their world from feeling lost.
 
 ### The Solution
-[How are you solving it?]
-
----
+ ഓർമ്മ is a facial recognition-based memory aid designed for Alzheimer's patients, built using OpenCV's LBPH algorithm trained on locally collected face data. When a face is detected through the live camera feed, the app identifies the person and displays their name and relation to the patient — helping them recognise family members, doctors, and caregivers. The system is entirely offline, ensuring patient privacy, and is complemented by a diary, reminders, and a personal people directory, all accessible through a single Flask-powered web interface.
 
 ## Technical Details
 
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
-
-**For Hardware:**
-- Main components: [List main components]
-- Specifications: [Technical specifications]
-- Tools required: [List tools needed]
-
----
+-Languages used: Python, HTML5, CSS3, JavaScript (ES6)
+-Frameworks used: Flask (RESTful web framework), OpenCV LBPH (Local Binary Pattern Histogram) facial recognition pipeline
+-Libraries used: OpenCV (opencv-contrib-python), NumPy, Jinja2 templating engine, Python standard libraries (JSON, OS, DateTime)
+-Tools used: VS Code, Git, GitHub, Haar Cascade Classifier (pre-trained facial detection model)
 
 ## Features
 
-List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
+-Real-Time Facial Recognition Pipeline: Implements a locally trained LBPH (Local Binary Pattern Histogram) model with Haar Cascade pre-processing to perform multi-face detection and identity classification through a live MJPEG camera stream, rendering recognised identities with confidence-threshold filtering in real time.
 
----
+-Caregiver-Controlled Enrolment System: A password-separable caregiver interface allows authorised users to enrol new individuals by capturing a 200-frame face dataset, triggering an on-device model retraining pipeline that updates the recognition system without requiring external compute or cloud dependency.
+
+-Persistent Personal People Directory: Maintains structured JSON-based profiles for each known individual, storing relational metadata, biographical tidbits, and a timestamped conversation history enabling the patient to contextualise and recall past interactions with people in their life.
+
+-Contextual Daily Diary: A chronologically ordered personal journal with collapsible entry rendering, persisted to local storage via a lightweight JSON data layer preserving episodic memory entries across sessions with full read and write access.
+
+-Reminder System: A time-aware daily task management system with per-reminder state toggling, completion progress tracking, and a historical log of past days designed to support medication adherence and routine maintenance for patients with cognitive decline.
+
+-Fully Offline, Privacy-First Architecture: The entire application stack : model training, inference, data storage and UI serving,runs locally on-device with zero network dependency, ensuring sensitive biometric and personal data never leaves the patient's environment.
 
 ## Implementation
 
@@ -59,23 +55,13 @@ List the key features of your project:
 
 #### Installation
 ```bash
-[Installation commands - e.g., npm install, pip install -r requirements.txt]
+pip install flask opencv-contrib-python numpy
 ```
 
 #### Run
 ```bash
-[Run commands - e.g., npm start, python app.py]
+python app.py
 ```
-
-### For Hardware:
-
-#### Components Required
-[List all components needed with specifications]
-
-#### Circuit Setup
-[Explain how to set up the circuit]
-
----
 
 ## Project Documentation
 
@@ -96,8 +82,7 @@ List the key features of your project:
 
 **System Architecture:**
 
-![Architecture Diagram](docs/architecture.png)
-*Explain your system architecture - components, data flow, tech stack interaction*
+<img width="2410" height="2253" alt="image" src="https://github.com/user-attachments/assets/94faa3b3-1bbc-481f-bc82-0a8d43cb3ac3" />
 
 **Application Workflow:**
 
@@ -105,16 +90,6 @@ List the key features of your project:
 *Add caption explaining your workflow*
 
 ---
-
-### For Hardware:
-
-#### Schematic & Circuit
-
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
 
 #### Build Photos
 
@@ -215,52 +190,6 @@ xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug
 
 ---
 
-### For Hardware Projects:
-
-#### Bill of Materials (BOM)
-
-| Component | Quantity | Specifications | Price | Link/Source |
-|-----------|----------|----------------|-------|-------------|
-| Arduino Uno | 1 | ATmega328P, 16MHz | ₹450 | [Link] |
-| LED | 5 | Red, 5mm, 20mA | ₹5 each | [Link] |
-| Resistor | 5 | 220Ω, 1/4W | ₹1 each | [Link] |
-| Breadboard | 1 | 830 points | ₹100 | [Link] |
-| Jumper Wires | 20 | Male-to-Male | ₹50 | [Link] |
-| [Add more...] | | | | |
-
-**Total Estimated Cost:** ₹[Amount]
-
-#### Assembly Instructions
-
-**Step 1: Prepare Components**
-1. Gather all components listed in the BOM
-2. Check component specifications
-3. Prepare your workspace
-![Step 1](images/assembly-step1.jpg)
-*Caption: All components laid out*
-
-**Step 2: Build the Power Supply**
-1. Connect the power rails on the breadboard
-2. Connect Arduino 5V to breadboard positive rail
-3. Connect Arduino GND to breadboard negative rail
-![Step 2](images/assembly-step2.jpg)
-*Caption: Power connections completed*
-
-**Step 3: Add Components**
-1. Place LEDs on breadboard
-2. Connect resistors in series with LEDs
-3. Connect LED cathodes to GND
-4. Connect LED anodes to Arduino digital pins (2-6)
-![Step 3](images/assembly-step3.jpg)
-*Caption: LED circuit assembled*
-
-**Step 4: [Continue for all steps...]**
-
-**Final Assembly:**
-![Final Build](images/final-build.jpg)
-*Caption: Completed project ready for testing*
-
----
 
 ### For Scripts/CLI Tools:
 
@@ -400,8 +329,8 @@ If you used AI tools during development, document them here for transparency:
 
 ## Team Contributions
 
-- [Name 1]: [Specific contributions - e.g., Frontend development, API integration, etc.]
-- [Name 2]: [Specific contributions - e.g., Backend development, Database design, etc.]
+- Adithya Vijay: [Specific contributions - e.g., Frontend development, API integration, etc.]
+- Snoopa K: [Specific contributions - e.g., Backend development, Database design, etc.]
 - [Name 3]: [Specific contributions - e.g., UI/UX design, Testing, Documentation, etc.]
 
 ---
