@@ -7,7 +7,7 @@ face_cascade = cv2.CascadeClassifier(
     cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
 )
 
-CONFIDENCE_THRESHOLD = 80
+CONFIDENCE_THRESHOLD = 62
 
 def load_model():
     if not os.path.exists("lbph_face_model.xml") or not os.path.exists("label_map.json"):
@@ -104,7 +104,7 @@ def collect_faces_stream(name, relation):
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
 
-        if count >= 100:
+        if count >= 200:
             break
 
     cap.release()

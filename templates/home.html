@@ -3,87 +3,59 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ഓർമ്മ — AlzHelper</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<title>ഓർമ്മ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --cream: #FAF6F0;
-    --warm: #F2E8D9;
-    --peach: #E8C9A0;
-    --coral: #D4845A;
-    --rust: #B5593A;
-    --brown: #6B3828;
-    --sage: #7A9E7E;
-    --sage-dark: #4A6E4E;
-    --gold: #C49A3C;
-    --sky: #7AAABE;
-    --lav: #9B8AB4;
-    --text: #2C1810;
-    --text-soft: #7A5A48;
-  }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
     height: 100%;
-    font-family: 'Nunito', sans-serif;
-    background: var(--cream);
     overflow: hidden;
+    background: #F7F2EA;
+    font-family: 'DM Sans', sans-serif;
   }
 
-  /* BACKGROUND */
-  .bg {
+  body::before {
+    content: '';
     position: fixed; inset: 0; z-index: 0;
-    background: var(--cream);
-  }
-
-  .bg::before {
-    content: '';
-    position: absolute; inset: 0;
     background:
-      radial-gradient(ellipse at 30% 30%, rgba(196,154,60,0.12) 0%, transparent 55%),
-      radial-gradient(ellipse at 75% 20%, rgba(212,132,90,0.1) 0%, transparent 45%),
-      radial-gradient(ellipse at 20% 80%, rgba(122,158,126,0.1) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 75%, rgba(122,170,190,0.08) 0%, transparent 45%);
+      radial-gradient(ellipse 80% 60% at 15% 10%, rgba(193,160,110,0.13) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 85% 85%, rgba(142,162,138,0.10) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 70% 10%, rgba(180,140,110,0.08) 0%, transparent 50%);
   }
 
-  /* Soft grain */
-  .bg::after {
+  body::after {
     content: '';
-    position: absolute; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    opacity: 0.4;
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
     pointer-events: none;
   }
 
-  /* MAIN LAYOUT */
   .page {
     position: relative; z-index: 1;
     height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
+
+  /* HERO */
+  .hero {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 24px 48px;
-  }
-
-  /* TOP SPACER */
-  .top-space { flex: 1; }
-
-  /* HERO WORD */
-  .hero {
-    flex: 0 0 auto;
+    justify-content: center;
+    padding: 0 40px;
     text-align: center;
-    position: relative;
   }
 
-  .word-container {
+  .word-wrap {
     position: relative;
-    height: 120px;
+    height: clamp(90px, 16vw, 140px);
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 28px;
   }
 
   .word {
@@ -92,255 +64,245 @@
     transform: translate(-50%, -50%);
     white-space: nowrap;
     line-height: 1;
-    transition: none;
   }
 
-  .word-malayalam {
+  .word-mal {
     font-family: 'Noto Serif Malayalam', serif;
-    font-size: clamp(4rem, 12vw, 7.5rem);
     font-weight: 300;
-    color: var(--brown);
+    font-size: clamp(3.5rem, 11vw, 7rem);
+    color: #3D2B1A;
     letter-spacing: -1px;
-    opacity: 1;
-    animation: wordFadeOut 1s ease 2.5s forwards;
+    animation: fadeOutWord 1s cubic-bezier(0.4,0,0.2,1) 2.2s forwards;
   }
 
-  .word-english {
+  .word-en {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3.2rem, 10vw, 6.5rem);
     font-weight: 300;
     font-style: italic;
-    color: var(--brown);
-    letter-spacing: 2px;
+    font-size: clamp(3rem, 9.5vw, 6.2rem);
+    color: #3D2B1A;
+    letter-spacing: 4px;
     opacity: 0;
-    animation: wordFadeIn 1.2s ease 2.8s forwards;
+    animation: fadeInWord 1.1s cubic-bezier(0.4,0,0.2,1) 2.6s forwards;
   }
 
-  /* Subtle underline that draws itself */
-  .word-english::after {
-    content: '';
-    position: absolute;
-    bottom: -8px; left: 0;
-    width: 100%; height: 1.5px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    transform: scaleX(0);
-    transform-origin: center;
-    animation: lineGrow 0.8s ease 4.2s forwards;
+  .rule {
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #B8975A 30%, #B8975A 70%, transparent 100%);
+    margin: 0 auto 24px;
+    animation: ruleGrow 0.9s cubic-bezier(0.4,0,0.2,1) 3.8s forwards;
   }
 
   .tagline {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    color: var(--text-soft);
-    letter-spacing: 3px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 0.78rem;
+    letter-spacing: 4px;
     text-transform: uppercase;
+    color: #9A8070;
     opacity: 0;
-    animation: fadeUp 0.8s ease 4.4s forwards;
-    margin-bottom: 8px;
+    animation: fadeUp 0.8s ease 4s forwards;
   }
 
-  /* MIDDLE SPACE */
-  .mid-space { flex: 1.2; }
+  /* NAVIGATION */
+  .nav-section {
+    padding: 0 40px 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 4.3s forwards;
+  }
 
-  /* BOTTOM NAV */
-  .nav-grid {
+  .nav-sep {
     width: 100%;
-    max-width: 640px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    opacity: 0;
-    animation: fadeUp 0.9s ease 4.8s forwards;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(180,150,110,0.25), transparent);
+    margin-bottom: 36px;
   }
 
-  .nav-card {
-    background: white;
-    border-radius: 22px;
-    padding: 22px 20px;
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .nav-item {
     text-decoration: none;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 16px;
-    box-shadow: 0 2px 20px rgba(44,24,16,0.07);
-    border: 1.5px solid rgba(232,201,160,0.5);
-    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    gap: 12px;
+    padding: 20px 16px;
     position: relative;
-    overflow: hidden;
+    transition: opacity 0.25s ease;
   }
 
-  .nav-card::before {
+  .nav-item + .nav-item::before {
     content: '';
     position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.22s ease;
-    border-radius: 22px;
+    left: 0; top: 20%; bottom: 20%;
+    width: 1px;
+    background: rgba(180,150,110,0.2);
   }
 
-  .nav-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 36px rgba(44,24,16,0.13);
-  }
+  .nav-item:hover { opacity: 0.6; }
+  .nav-item:hover .nav-label { transform: translateY(-2px); }
 
-  .nav-card:hover::before { opacity: 1; }
-
-  /* Card accent colours */
-  .card-face { border-left: 4px solid var(--coral); }
-  .card-face::before { background: linear-gradient(135deg, rgba(212,132,90,0.06), transparent); }
-  .card-face:hover { border-color: var(--coral); }
-
-  .card-people { border-left: 4px solid var(--gold); }
-  .card-people::before { background: linear-gradient(135deg, rgba(196,154,60,0.06), transparent); }
-  .card-people:hover { border-color: var(--gold); }
-
-  .card-diary { border-left: 4px solid var(--rust); }
-  .card-diary::before { background: linear-gradient(135deg, rgba(181,89,58,0.06), transparent); }
-  .card-diary:hover { border-color: var(--rust); }
-
-  .card-reminders { border-left: 4px solid var(--sage); }
-  .card-reminders::before { background: linear-gradient(135deg, rgba(122,158,126,0.06), transparent); }
-  .card-reminders:hover { border-color: var(--sage); }
-
-  .card-icon {
-    width: 48px; height: 48px;
-    border-radius: 14px;
+  .nav-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(180,150,110,0.3);
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.5rem;
-    flex-shrink: 0;
+    transition: border-color 0.25s, background 0.25s;
   }
 
-  .icon-face { background: rgba(212,132,90,0.12); }
-  .icon-people { background: rgba(196,154,60,0.12); }
-  .icon-diary { background: rgba(181,89,58,0.12); }
-  .icon-reminders { background: rgba(122,158,126,0.12); }
-
-  .card-text { flex: 1; }
-
-  .card-title {
-    font-size: 0.97rem;
-    font-weight: 800;
-    color: var(--text);
-    margin-bottom: 2px;
+  .nav-item:hover .nav-icon {
+    border-color: rgba(180,150,110,0.7);
+    background: rgba(180,150,110,0.06);
   }
 
-  .card-sub {
-    font-size: 0.76rem;
-    color: var(--text-soft);
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 0.85rem;
+  .nav-icon svg {
+    width: 18px; height: 18px;
+    stroke: #8A6A50;
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.25s;
   }
 
-  .card-arrow {
-    font-size: 1rem;
-    color: var(--peach);
-    flex-shrink: 0;
-    transition: transform 0.2s, color 0.2s;
+  .nav-item:hover .nav-icon svg { stroke: #5A3A20; }
+
+  .nav-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #8A6A50;
+    transition: transform 0.25s, color 0.25s;
   }
 
-  .nav-card:hover .card-arrow {
-    transform: translateX(4px);
-    color: var(--coral);
+  .nav-item:hover .nav-label { color: #5A3A20; }
+
+  .caregiver-link {
+    text-align: center;
+    margin-top: 28px;
   }
+
+  .caregiver-link a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #B0967A;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(180,150,110,0.3);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .caregiver-link a:hover { color: #7A5A3A; border-color: rgba(122,90,58,0.5); }
 
   /* ANIMATIONS */
-  @keyframes wordFadeOut {
-    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    40% { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
-    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
+  @keyframes fadeOutWord {
+    0%   { opacity: 1; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, calc(-50% - 8px)); }
   }
 
-  @keyframes wordFadeIn {
-    0% { opacity: 0; transform: translate(-50%, -50%) scale(1.03); }
-    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  @keyframes fadeInWord {
+    0%   { opacity: 0; transform: translate(-50%, calc(-50% + 8px)); }
+    100% { opacity: 1; transform: translate(-50%, -50%); }
   }
 
-  @keyframes lineGrow {
-    from { transform: scaleX(0); }
-    to { transform: scaleX(1); }
+  @keyframes ruleGrow {
+    from { width: 0; }
+    to   { width: min(320px, 60%); }
   }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* Initial page fade in */
-  .page { animation: pageIn 0.8s ease both; }
+  .page { animation: pageIn 0.6s ease both; }
+  @keyframes pageIn { from { opacity:0; } to { opacity:1; } }
 
-  @keyframes pageIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  @media (max-width: 600px) {
+    .nav-grid { grid-template-columns: repeat(2, 1fr); }
+    .nav-item + .nav-item::before { display: none; }
+    .nav-section { padding: 0 24px 40px; }
   }
 </style>
 </head>
 <body>
-
-<div class="bg"></div>
-
 <div class="page">
-  <div class="top-space"></div>
 
-  <!-- HERO -->
   <div class="hero">
-    <div class="word-container">
-      <div class="word word-malayalam">ഓർമ്മ</div>
-      <div class="word word-english">remembrance</div>
+    <div class="word-wrap">
+      <div class="word word-mal">ഓർമ്മ</div>
+      <div class="word word-en">remembrance</div>
     </div>
+    <div class="rule"></div>
     <div class="tagline">a gentle companion for every day</div>
   </div>
 
-  <div class="mid-space"></div>
+  <div class="nav-section">
+    <div class="nav-sep"></div>
+    <nav class="nav-grid">
 
-  <!-- BOTTOM NAV GRID -->
-  <nav class="nav-grid">
+      <a href="/face" class="nav-item">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M2 8.5A1.5 1.5 0 013.5 7h1.67L7 4.5h10L18.83 7H20.5A1.5 1.5 0 0122 8.5v10a1.5 1.5 0 01-1.5 1.5h-17A1.5 1.5 0 012 18.5z"/>
+          </svg>
+        </div>
+        <span class="nav-label">Recognise</span>
+      </a>
 
-    <a href="/face" class="nav-card card-face">
-      <div class="card-icon icon-face">📷</div>
-      <div class="card-text">
-        <div class="card-title">Who is this?</div>
-        <div class="card-sub">Recognise a face</div>
-      </div>
-      <div class="card-arrow">›</div>
-    </a>
+      <a href="/people" class="nav-item">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="9" cy="7" r="3"/>
+            <path d="M3 20c0-3.314 2.686-6 6-6s6 2.686 6 6"/>
+            <circle cx="17" cy="8" r="2.5"/>
+            <path d="M21 20c0-2.761-1.791-5-4-5"/>
+          </svg>
+        </div>
+        <span class="nav-label">My People</span>
+      </a>
 
-    <a href="/people" class="nav-card card-people">
-      <div class="card-icon icon-people">💛</div>
-      <div class="card-text">
-        <div class="card-title">My People</div>
-        <div class="card-sub">Familiar faces</div>
-      </div>
-      <div class="card-arrow">›</div>
-    </a>
+      <a href="/diary" class="nav-item">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+            <line x1="9" y1="7" x2="15" y2="7"/>
+            <line x1="9" y1="11" x2="13" y2="11"/>
+          </svg>
+        </div>
+        <span class="nav-label">Diary</span>
+      </a>
 
-    <a href="/diary" class="nav-card card-diary">
-      <div class="card-icon icon-diary">📔</div>
-      <div class="card-text">
-        <div class="card-title">My Diary</div>
-        <div class="card-sub">Thoughts & memories</div>
-      </div>
-      <div class="card-arrow">›</div>
-    </a>
+      <a href="/reminders" class="nav-item">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 01-3.46 0"/>
+          </svg>
+        </div>
+        <span class="nav-label">Reminders</span>
+      </a>
 
-    <a href="/reminders" class="nav-card card-reminders">
-      <div class="card-icon icon-reminders">🔔</div>
-      <div class="card-text">
-        <div class="card-title">Reminders</div>
-        <div class="card-sub">Gentle nudges</div>
-      </div>
-      <div class="card-arrow">›</div>
-    </a>
+    </nav>
 
-    <a href="/caregiver" class="nav-card" style="grid-column:1/-1; border-left:4px solid var(--brown); margin-top:2px;">
-      <div class="card-icon" style="background:rgba(107,56,40,0.1);">🔐</div>
-      <div class="card-text">
-        <div class="card-title">Caregiver Settings</div>
-        <div class="card-sub">Add faces &amp; train model</div>
-      </div>
-      <div class="card-arrow">›</div>
-    </a>
-  </nav>
+    <div class="caregiver-link">
+      <a href="/caregiver">Caregiver Settings</a>
+    </div>
+  </div>
+
 </div>
-
 </body>
 </html>
