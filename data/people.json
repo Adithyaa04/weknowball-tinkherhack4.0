@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "Adithya",
+    "relation": "Friend",
+    "tidbit": "Loud and opinionated. Dont call before 8 am",
+    "last_visit": "Friday, 20 February 2026",
+    "conversations": [
+      {
+        "note": "Went on a walk with her. saw cute cats",
+        "date": "Friday, 20 February 2026",
+        "time": "11:09 PM"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Snoopa",
+    "relation": "Physiotherapist",
+    "tidbit": "Dont crack a joke before sessions. she will crack your hand extra hard",
+    "last_visit": "Friday, 20 February 2026",
+    "conversations": [
+      {
+        "note": "During last session, she told me not to sleep on my back for too long. Told me she will show me her cute niece's photo at tomorrows session at 4 pm",
+        "date": "Friday, 20 February 2026",
+        "time": "11:12 PM"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Thomas",
+    "relation": "Son",
+    "tidbit": "Dont take his call.",
+    "last_visit": "Friday, 20 February 2026",
+    "conversations": [
+      {
+        "note": "He always wants money. He is currently 32 and is homeless lol",
+        "date": "Friday, 20 February 2026",
+        "time": "11:14 PM"
+      }
+    ]
+  }
+]

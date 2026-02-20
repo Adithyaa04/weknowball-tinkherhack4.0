@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>{{ person.name }} — AlzHelper</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #FDF6EC;
+    --warm: #F5E6D0;
+    --peach: #F2C9A0;
+    --coral: #E8956D;
+    --rust: #C4614A;
+    --brown: #7A4030;
+    --sage: #8FAF8A;
+    --sage-dark: #5C7A57;
+    --gold: #D4A842;
+    --text: #3A2820;
+    --text-soft: #7A5A50;
+    --shadow: rgba(100,50,30,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(242,201,160,0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(143,175,138,0.2) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .app {
+    position: relative; z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 30px 20px 80px;
+  }
+
+  /* BACK BUTTON */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 2px solid var(--peach);
+    border-radius: 50px;
+    padding: 8px 18px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--rust);
+    text-decoration: none;
+    margin-bottom: 28px;
+    transition: background 0.2s;
+    animation: fadeDown 0.5s ease both;
+  }
+
+  .back-btn:hover { background: var(--warm); }
+
+  /* PROFILE CARD */
+  .profile-card {
+    background: white;
+    border-radius: 28px;
+    padding: 36px;
+    box-shadow: 0 4px 32px var(--shadow);
+    margin-bottom: 28px;
+    text-align: center;
+    border: 2px solid rgba(242,201,160,0.4);
+    animation: fadeUp 0.5s 0.1s ease both;
+    position: relative;
+  }
+
+  .delete-person {
+    position: absolute;
+    top: 18px; right: 18px;
+    background: none; border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    opacity: 0.3;
+    transition: opacity 0.2s;
+    color: var(--rust);
+  }
+
+  .delete-person:hover { opacity: 1; }
+
+  .profile-avatar {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--warm), var(--peach));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--rust);
+    margin: 0 auto 16px;
+    border: 4px solid var(--peach);
+    box-shadow: 0 4px 20px rgba(242,201,160,0.5);
+  }
+
+  .profile-name {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--brown);
+    margin-bottom: 6px;
+  }
+
+  .profile-relation {
+    display: inline-block;
+    background: rgba(143,175,138,0.2);
+    color: var(--sage-dark);
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .profile-tidbit {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--text-soft);
+    line-height: 1.6;
+    max-width: 420px;
+    margin: 0 auto 16px;
+  }
+
+  .profile-last-visit {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--peach);
+  }
+
+  /* CONVERSATION SECTION */
+  .section-title {
+    font-size: 1.1rem; font-weight: 800;
+    color: var(--brown);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+    animation: fadeUp 0.5s 0.15s ease both;
+  }
+
+  /* ADD CONVERSATION */
+  .add-conv-card {
+    background: white;
+    border-radius: 22px;
+    padding: 24px;
+    box-shadow: 0 2px 18px var(--shadow);
+    margin-bottom: 24px;
+    border: 2px solid rgba(242,201,160,0.4);
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
+
+  .add-conv-card h3 {
+    font-size: 1rem; font-weight: 800;
+    color: var(--brown); margin-bottom: 12px;
+  }
+
+  .conv-input {
+    width: 100%;
+    border: 2px solid var(--warm);
+    border-radius: 14px;
+    padding: 13px 16px;
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    background: var(--cream);
+    outline: none;
+    resize: none;
+    height: 100px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+
+  .conv-input:focus { border-color: var(--coral); }
+  .conv-input::placeholder { color: var(--text-soft); font-style: italic; }
+
+  .save-btn {
+    background: linear-gradient(135deg, var(--coral), var(--rust));
+    color: white; border: none;
+    border-radius: 50px;
+    padding: 11px 26px;
+    font-size: 0.9rem; font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(196,97,74,0.3);
+    transition: transform 0.15s;
+  }
+
+  .save-btn:hover { transform: translateY(-2px); }
+
+  /* CONVERSATION HISTORY */
+  .conv-entry {
+    background: white;
+    border-radius: 18px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 14px var(--shadow);
+    border-left: 4px solid var(--gold);
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .conv-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .conv-date {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .conv-time {
+    font-size: 0.75rem;
+    color: var(--peach);
+    font-weight: 600;
+  }
+
+  .conv-note {
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .empty-conv {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-soft);
+  }
+
+  .empty-conv div:first-child { font-size: 2.5rem; margin-bottom: 10px; }
+  .empty-conv p { font-family: 'Lora', serif; font-style: italic; font-size: 0.95rem; }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <a class="back-btn" href="/people">← Back to My People</a>
+
+  <!-- PROFILE CARD -->
+  <div class="profile-card">
+    <form action="/people/delete/{{ person.id }}" method="POST"
+          onsubmit="return confirm('Remove {{ person.name }} from your people?')">
+      <button class="delete-person" type="submit" title="Remove person">🗑</button>
+    </form>
+
+    <div class="profile-avatar">{{ person.name[0] }}</div>
+    <div class="profile-name">{{ person.name }}</div>
+    <div class="profile-relation">{{ person.relation }}</div>
+
+    {% if person.tidbit %}
+    <div class="profile-tidbit">"{{ person.tidbit }}"</div>
+    {% endif %}
+
+    <div class="profile-last-visit">
+      {% if person.last_visit %}
+        Last seen: {{ person.last_visit }}
+      {% else %}
+        No visits recorded yet
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- ADD CONVERSATION -->
+  <div class="section-title">💬 Conversation Notes</div>
+
+  <div class="add-conv-card">
+    <h3>✏️ What did you talk about?</h3>
+    <form action="/people/{{ person.id }}/add_note" method="POST">
+      <textarea
+        class="conv-input"
+        name="note"
+        placeholder="e.g. Sarah visited today, we talked about her new job and had tea in the garden..."
+        required
+      ></textarea>
+      <button class="save-btn" type="submit">💾 Save Note</button>
+    </form>
+  </div>
+
+  <!-- CONVERSATION HISTORY -->
+  {% if person.conversations %}
+    {% for conv in person.conversations %}
+    <div class="conv-entry">
+      <div class="conv-meta">
+        <span class="conv-date">{{ conv.date }}</span>
+        <span class="conv-time">{{ conv.time }}</span>
+      </div>
+      <div class="conv-note">{{ conv.note }}</div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty-conv">
+      <div>💭</div>
+      <p>No conversation notes yet. Add one above!</p>
+    </div>
+  {% endif %}
+
+</div>
+</body>
+</html>
