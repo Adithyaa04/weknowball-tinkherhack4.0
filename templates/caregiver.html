@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Caregiver Settings — AlzHelper</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Cormorant+Garamond:ital,wght@1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #FAF6F0; --warm: #F2E8D9; --peach: #E8C9A0;
+    --coral: #D4845A; --rust: #B5593A; --brown: #6B3828;
+    --sage: #7A9E7E; --sage-dark: #4A6E4E;
+    --text: #2C1810; --text-soft: #7A5A48;
+    --shadow: rgba(44,24,16,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--cream); min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 20% 20%, rgba(212,132,90,0.1) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 80%, rgba(122,158,126,0.1) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+  .app { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 30px 20px 60px; }
+
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; animation: fadeDown 0.6s ease both; }
+  .back-btn {
+    background: white; border: 2px solid var(--peach); border-radius: 50px;
+    padding: 8px 18px; font-size: 0.88rem; font-weight: 700;
+    color: var(--rust); text-decoration: none; transition: background 0.2s;
+  }
+  .back-btn:hover { background: var(--warm); }
+  .header-title h1 { font-size: 1.5rem; font-weight: 900; color: var(--brown); }
+  .header-title p { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 0.9rem; color: var(--text-soft); }
+
+  /* SECTION CARD */
+  .section-card {
+    background: white; border-radius: 24px; padding: 28px;
+    box-shadow: 0 4px 28px var(--shadow); margin-bottom: 20px;
+    border: 1.5px solid rgba(232,201,160,0.5);
+    animation: fadeUp 0.6s ease both;
+  }
+  .section-card h2 { font-size: 1.05rem; font-weight: 800; color: var(--brown); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .section-card p { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 18px; line-height: 1.5; }
+
+  .form-row { display: flex; gap: 12px; margin-bottom: 12px; }
+  .form-input {
+    flex: 1; border: 2px solid var(--warm); border-radius: 14px;
+    padding: 12px 16px; font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem; font-weight: 700; color: var(--text);
+    background: var(--cream); outline: none; transition: border-color 0.2s;
+  }
+  .form-input:focus { border-color: var(--coral); }
+  .form-input::placeholder { color: var(--text-soft); font-weight: 400; }
+
+  .primary-btn {
+    background: linear-gradient(135deg, var(--coral), var(--rust));
+    color: white; border: none; border-radius: 50px;
+    padding: 12px 28px; font-size: 0.95rem; font-weight: 800;
+    font-family: 'Nunito', sans-serif; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(181,89,58,0.3); transition: transform 0.15s;
+  }
+  .primary-btn:hover { transform: translateY(-2px); }
+
+  .sage-btn {
+    background: linear-gradient(135deg, var(--sage), var(--sage-dark));
+    color: white; border: none; border-radius: 50px;
+    padding: 12px 28px; font-size: 0.95rem; font-weight: 800;
+    font-family: 'Nunito', sans-serif; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(74,110,78,0.3); transition: transform 0.15s;
+  }
+  .sage-btn:hover { transform: translateY(-2px); }
+
+  /* PEOPLE IN MODEL */
+  .person-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(122,158,126,0.15); border: 1.5px solid rgba(122,158,126,0.3);
+    border-radius: 50px; padding: 5px 14px;
+    font-size: 0.82rem; font-weight: 700; color: var(--sage-dark);
+    margin: 4px;
+  }
+
+  /* RESULT */
+  .result-banner {
+    border-radius: 14px; padding: 14px 18px;
+    font-size: 0.9rem; font-weight: 700; margin-bottom: 16px;
+  }
+  .result-success { background: rgba(122,158,126,0.15); color: var(--sage-dark); border: 1.5px solid rgba(122,158,126,0.3); }
+  .result-error { background: rgba(212,132,90,0.12); color: var(--rust); border: 1.5px solid rgba(212,132,90,0.3); }
+
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <a class="back-btn" href="/home">← Home</a>
+    <div class="header-title">
+      <h1>🔐 Caregiver Settings</h1>
+      <p>Add faces and train the model</p>
+    </div>
+  </header>
+
+  {% if train_result %}
+  <div class="result-banner {{ 'result-success' if train_success else 'result-error' }}">
+    {{ '✅' if train_success else '❌' }} {{ train_result }}
+  </div>
+  {% endif %}
+
+  <!-- ADD NEW PERSON -->
+  <div class="section-card">
+    <h2>📷 Add a New Person</h2>
+    <p>Enter their name and relation, then the camera will open and capture 100 photos of their face automatically.</p>
+    <form action="/caregiver/collect" method="POST">
+      <div class="form-row">
+        <input class="form-input" name="name" placeholder="Full name (e.g. Sarah)" required/>
+        <input class="form-input" name="relation" placeholder="Relation (e.g. Daughter, Doctor)" required/>
+      </div>
+      <button class="primary-btn" type="submit">📷 Start Capturing</button>
+    </form>
+  </div>
+
+  <!-- TRAIN MODEL -->
+  <div class="section-card" style="animation-delay: 0.1s">
+    <h2>🧠 Train the Model</h2>
+    <p>After adding one or more people, train the model so AlzHelper can recognise them. Do this every time you add a new person.</p>
+
+    {% if people %}
+    <div style="margin-bottom: 16px;">
+      <div style="font-size:0.8rem; font-weight:700; color:var(--text-soft); margin-bottom:8px;">People currently in model:</div>
+      {% for p in people %}
+      <span class="person-tag">👤 {{ p.name }} — {{ p.relation }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <form action="/caregiver/train" method="POST"
+          onsubmit="this.querySelector('button').textContent='🧠 Training...'">
+      <button class="sage-btn" type="submit">🧠 Train Now</button>
+    </form>
+  </div>
+
+</div>
+</body>
+</html>

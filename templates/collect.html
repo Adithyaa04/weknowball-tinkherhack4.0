@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Capturing Faces — AlzHelper</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #FAF6F0; --warm: #F2E8D9; --peach: #E8C9A0;
+    --coral: #D4845A; --rust: #B5593A; --brown: #6B3828;
+    --sage: #7A9E7E; --sage-dark: #4A6E4E;
+    --text: #2C1810; --text-soft: #7A5A48;
+    --shadow: rgba(44,24,16,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--cream); min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 20% 20%, rgba(122,158,126,0.12) 0%, transparent 55%);
+    pointer-events: none; z-index: 0;
+  }
+  .app { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 30px 20px 60px; }
+
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .back-btn {
+    background: white; border: 2px solid var(--peach); border-radius: 50px;
+    padding: 8px 18px; font-size: 0.88rem; font-weight: 700;
+    color: var(--rust); text-decoration: none; transition: background 0.2s;
+  }
+  .back-btn:hover { background: var(--warm); }
+  h1 { font-size: 1.4rem; font-weight: 900; color: var(--brown); }
+  .subtitle { font-size: 0.88rem; color: var(--text-soft); }
+
+  .camera-wrap {
+    background: white; border-radius: 28px; overflow: hidden;
+    box-shadow: 0 6px 40px var(--shadow);
+    border: 2px solid rgba(122,158,126,0.4);
+    margin-bottom: 20px; position: relative;
+  }
+  .camera-wrap img { width: 100%; display: block; }
+
+  .camera-label {
+    position: absolute; top: 16px; left: 16px;
+    background: rgba(44,24,16,0.55); backdrop-filter: blur(6px);
+    color: white; border-radius: 50px; padding: 6px 16px;
+    font-size: 0.78rem; font-weight: 700;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #FF4444; animation: blink 1.2s ease-in-out infinite; }
+
+  .info-card {
+    background: white; border-radius: 20px; padding: 20px 24px;
+    box-shadow: 0 2px 18px var(--shadow);
+    border-left: 4px solid var(--sage);
+    margin-bottom: 16px;
+  }
+  .info-card h3 { font-size: 0.95rem; font-weight: 800; color: var(--brown); margin-bottom: 8px; }
+  .info-card p { font-size: 0.85rem; color: var(--text-soft); line-height: 1.6; }
+
+  .done-btn {
+    background: linear-gradient(135deg, var(--sage), var(--sage-dark));
+    color: white; border: none; border-radius: 50px;
+    padding: 14px 32px; font-size: 1rem; font-weight: 800;
+    font-family: 'Nunito', sans-serif; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(74,110,78,0.3); transition: transform 0.15s;
+    display: block; margin: 0 auto;
+  }
+  .done-btn:hover { transform: translateY(-2px); }
+
+  @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <a class="back-btn" href="/caregiver">← Back</a>
+    <div>
+      <h1>📷 Capturing {{ name }}</h1>
+      <div class="subtitle">Relation: {{ relation }} — capturing 100 photos automatically</div>
+    </div>
+  </header>
+
+  <div class="camera-wrap">
+    <div class="camera-label">
+      <div class="live-dot"></div> CAPTURING
+    </div>
+    <img src="/collect_feed" alt="Capture feed"/>
+  </div>
+
+  <div class="info-card">
+    <h3>💡 Tips</h3>
+    <p>Look directly at the camera and move your face slightly left, right and up to get varied angles. The green bar at the top shows progress. Once 100 photos are captured the camera will stop automatically.</p>
+  </div>
+
+  <a href="/caregiver">
+    <button class="done-btn">✅ Done — Back to Settings</button>
+  </a>
+
+</div>
+</body>
+</html>

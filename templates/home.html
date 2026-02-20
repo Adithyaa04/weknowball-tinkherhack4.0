@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ഓർമ്മ — AlzHelper</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #FAF6F0;
+    --warm: #F2E8D9;
+    --peach: #E8C9A0;
+    --coral: #D4845A;
+    --rust: #B5593A;
+    --brown: #6B3828;
+    --sage: #7A9E7E;
+    --sage-dark: #4A6E4E;
+    --gold: #C49A3C;
+    --sky: #7AAABE;
+    --lav: #9B8AB4;
+    --text: #2C1810;
+    --text-soft: #7A5A48;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    overflow: hidden;
+  }
+
+  /* BACKGROUND */
+  .bg {
+    position: fixed; inset: 0; z-index: 0;
+    background: var(--cream);
+  }
+
+  .bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 30%, rgba(196,154,60,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 75% 20%, rgba(212,132,90,0.1) 0%, transparent 45%),
+      radial-gradient(ellipse at 20% 80%, rgba(122,158,126,0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 75%, rgba(122,170,190,0.08) 0%, transparent 45%);
+  }
+
+  /* Soft grain */
+  .bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* MAIN LAYOUT */
+  .page {
+    position: relative; z-index: 1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px 48px;
+  }
+
+  /* TOP SPACER */
+  .top-space { flex: 1; }
+
+  /* HERO WORD */
+  .hero {
+    flex: 0 0 auto;
+    text-align: center;
+    position: relative;
+  }
+
+  .word-container {
+    position: relative;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .word {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    line-height: 1;
+    transition: none;
+  }
+
+  .word-malayalam {
+    font-family: 'Noto Serif Malayalam', serif;
+    font-size: clamp(4rem, 12vw, 7.5rem);
+    font-weight: 300;
+    color: var(--brown);
+    letter-spacing: -1px;
+    opacity: 1;
+    animation: wordFadeOut 1s ease 2.5s forwards;
+  }
+
+  .word-english {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.2rem, 10vw, 6.5rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--brown);
+    letter-spacing: 2px;
+    opacity: 0;
+    animation: wordFadeIn 1.2s ease 2.8s forwards;
+  }
+
+  /* Subtle underline that draws itself */
+  .word-english::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; left: 0;
+    width: 100%; height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: scaleX(0);
+    transform-origin: center;
+    animation: lineGrow 0.8s ease 4.2s forwards;
+  }
+
+  .tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--text-soft);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 4.4s forwards;
+    margin-bottom: 8px;
+  }
+
+  /* MIDDLE SPACE */
+  .mid-space { flex: 1.2; }
+
+  /* BOTTOM NAV */
+  .nav-grid {
+    width: 100%;
+    max-width: 640px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 4.8s forwards;
+  }
+
+  .nav-card {
+    background: white;
+    border-radius: 22px;
+    padding: 22px 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 20px rgba(44,24,16,0.07);
+    border: 1.5px solid rgba(232,201,160,0.5);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nav-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.22s ease;
+    border-radius: 22px;
+  }
+
+  .nav-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 36px rgba(44,24,16,0.13);
+  }
+
+  .nav-card:hover::before { opacity: 1; }
+
+  /* Card accent colours */
+  .card-face { border-left: 4px solid var(--coral); }
+  .card-face::before { background: linear-gradient(135deg, rgba(212,132,90,0.06), transparent); }
+  .card-face:hover { border-color: var(--coral); }
+
+  .card-people { border-left: 4px solid var(--gold); }
+  .card-people::before { background: linear-gradient(135deg, rgba(196,154,60,0.06), transparent); }
+  .card-people:hover { border-color: var(--gold); }
+
+  .card-diary { border-left: 4px solid var(--rust); }
+  .card-diary::before { background: linear-gradient(135deg, rgba(181,89,58,0.06), transparent); }
+  .card-diary:hover { border-color: var(--rust); }
+
+  .card-reminders { border-left: 4px solid var(--sage); }
+  .card-reminders::before { background: linear-gradient(135deg, rgba(122,158,126,0.06), transparent); }
+  .card-reminders:hover { border-color: var(--sage); }
+
+  .card-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .icon-face { background: rgba(212,132,90,0.12); }
+  .icon-people { background: rgba(196,154,60,0.12); }
+  .icon-diary { background: rgba(181,89,58,0.12); }
+  .icon-reminders { background: rgba(122,158,126,0.12); }
+
+  .card-text { flex: 1; }
+
+  .card-title {
+    font-size: 0.97rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .card-sub {
+    font-size: 0.76rem;
+    color: var(--text-soft);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+  }
+
+  .card-arrow {
+    font-size: 1rem;
+    color: var(--peach);
+    flex-shrink: 0;
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  .nav-card:hover .card-arrow {
+    transform: translateX(4px);
+    color: var(--coral);
+  }
+
+  /* ANIMATIONS */
+  @keyframes wordFadeOut {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    40% { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
+  }
+
+  @keyframes wordFadeIn {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(1.03); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+
+  @keyframes lineGrow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Initial page fade in */
+  .page { animation: pageIn 0.8s ease both; }
+
+  @keyframes pageIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="page">
+  <div class="top-space"></div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="word-container">
+      <div class="word word-malayalam">ഓർമ്മ</div>
+      <div class="word word-english">remembrance</div>
+    </div>
+    <div class="tagline">a gentle companion for every day</div>
+  </div>
+
+  <div class="mid-space"></div>
+
+  <!-- BOTTOM NAV GRID -->
+  <nav class="nav-grid">
+
+    <a href="/face" class="nav-card card-face">
+      <div class="card-icon icon-face">📷</div>
+      <div class="card-text">
+        <div class="card-title">Who is this?</div>
+        <div class="card-sub">Recognise a face</div>
+      </div>
+      <div class="card-arrow">›</div>
+    </a>
+
+    <a href="/people" class="nav-card card-people">
+      <div class="card-icon icon-people">💛</div>
+      <div class="card-text">
+        <div class="card-title">My People</div>
+        <div class="card-sub">Familiar faces</div>
+      </div>
+      <div class="card-arrow">›</div>
+    </a>
+
+    <a href="/diary" class="nav-card card-diary">
+      <div class="card-icon icon-diary">📔</div>
+      <div class="card-text">
+        <div class="card-title">My Diary</div>
+        <div class="card-sub">Thoughts & memories</div>
+      </div>
+      <div class="card-arrow">›</div>
+    </a>
+
+    <a href="/reminders" class="nav-card card-reminders">
+      <div class="card-icon icon-reminders">🔔</div>
+      <div class="card-text">
+        <div class="card-title">Reminders</div>
+        <div class="card-sub">Gentle nudges</div>
+      </div>
+      <div class="card-arrow">›</div>
+    </a>
+
+    <a href="/caregiver" class="nav-card" style="grid-column:1/-1; border-left:4px solid var(--brown); margin-top:2px;">
+      <div class="card-icon" style="background:rgba(107,56,40,0.1);">🔐</div>
+      <div class="card-text">
+        <div class="card-title">Caregiver Settings</div>
+        <div class="card-sub">Add faces &amp; train model</div>
+      </div>
+      <div class="card-arrow">›</div>
+    </a>
+  </nav>
+</div>
+
+</body>
+</html>
