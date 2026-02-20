@@ -39,7 +39,7 @@ while True:
             info = label_map.get(str(label), {"name": "Unknown", "relation": ""})
             name = info["name"]
             relation = info["relation"]
-            color = (34, 180, 100)  # green
+            color =(34, 180, 100)  # green
 
             cv2.rectangle(frame, (x, y), (x+w, y+h), color, 2)
             cv2.rectangle(frame, (x, y - 55), (x + w, y), color, -1)

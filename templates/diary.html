@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Diary — AlzHelper</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #FDF6EC;
+    --warm: #F5E6D0;
+    --peach: #F2C9A0;
+    --coral: #E8956D;
+    --rust: #C4614A;
+    --brown: #7A4030;
+    --sage: #8FAF8A;
+    --sage-dark: #5C7A57;
+    --text: #3A2820;
+    --text-soft: #7A5A50;
+    --shadow: rgba(100,50,30,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 15%, rgba(242,201,160,0.3) 0%, transparent 50%),
+      radial-gradient(circle at 85% 85%, rgba(143,175,138,0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 30px 20px 80px;
+  }
+
+  /* HEADER */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 36px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo {
+    width: 54px; height: 54px;
+    background: linear-gradient(135deg, var(--coral), var(--rust));
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 4px 16px rgba(196,97,74,0.3);
+  }
+
+  .header-title h1 {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--brown);
+  }
+
+  .header-title p {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 0.88rem;
+    color: var(--text-soft);
+  }
+
+  .date-pill {
+    background: white;
+    border: 2px solid var(--peach);
+    border-radius: 50px;
+    padding: 8px 18px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--rust);
+  }
+
+  /* WRITE NEW ENTRY */
+  .new-entry-card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 4px 28px var(--shadow);
+    margin-bottom: 32px;
+    border: 2px solid rgba(242,201,160,0.4);
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .new-entry-card h2 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--brown);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .input-title {
+    width: 100%;
+    border: 2px solid var(--warm);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    background: var(--cream);
+    outline: none;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+
+  .input-title:focus { border-color: var(--coral); }
+  .input-title::placeholder { color: var(--text-soft); font-weight: 400; }
+
+  .input-text {
+    width: 100%;
+    border: 2px solid var(--warm);
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    color: var(--text);
+    background: var(--cream);
+    outline: none;
+    resize: none;
+    height: 130px;
+    line-height: 1.7;
+    transition: border-color 0.2s;
+    margin-bottom: 14px;
+  }
+
+  .input-text:focus { border-color: var(--coral); }
+  .input-text::placeholder { color: var(--text-soft); font-style: italic; }
+
+  .save-btn {
+    background: linear-gradient(135deg, var(--coral), var(--rust));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 13px 32px;
+    font-size: 1rem;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(196,97,74,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(196,97,74,0.4);
+  }
+
+  /* PAST ENTRIES */
+  .entries-header {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--brown);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .entry-count {
+    background: var(--warm);
+    color: var(--rust);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-soft);
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .empty-state div:first-child { font-size: 3rem; margin-bottom: 12px; }
+  .empty-state p { font-family: 'Lora', serif; font-style: italic; font-size: 1rem; }
+
+  /* ENTRY CARD */
+  .entry-card {
+    background: white;
+    border-radius: 20px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 18px var(--shadow);
+    border-left: 4px solid var(--coral);
+    animation: fadeUp 0.5s ease both;
+    position: relative;
+  }
+
+  .entry-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .entry-date {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .entry-time {
+    font-size: 0.75rem;
+    color: var(--peach);
+    font-weight: 600;
+  }
+
+  .entry-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--brown);
+    margin-bottom: 8px;
+  }
+
+  .entry-text {
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* Expand/collapse for long entries */
+  .entry-text.collapsed {
+    display: -webkit-box;
+    /*-webkit-line-clamp: 3;*/
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .read-more {
+    background: none;
+    border: none;
+    color: var(--coral);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 6px 0 0;
+    display: block;
+  }
+
+  .delete-btn {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    opacity: 0.3;
+    transition: opacity 0.2s;
+    color: var(--rust);
+  }
+
+  .delete-btn:hover { opacity: 1; }
+
+  /* ANIMATIONS */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="header-left">
+      <div class="logo">📔</div>
+      <div class="header-title">
+        <h1>My Diary</h1>
+        <p>Write about your day</p>
+      </div>
+    </div>
+    <div class="date-pill" id="datePill">Today</div>
+  </header>
+
+  <!-- NEW ENTRY FORM -->
+  <div class="new-entry-card">
+    <h2>✏️ Write Today's Entry</h2>
+    <form action="/add" method="POST">
+      <input
+        class="input-title"
+        type="text"
+        name="title"
+        placeholder="Give your entry a title (optional)"
+        maxlength="80"
+      />
+      <textarea
+        class="input-text"
+        name="text"
+        placeholder="What happened today? How are you feeling? Write anything you like..."
+        required
+      ></textarea>
+      <button class="save-btn" type="submit">💾 Save Entry</button>
+    </form>
+  </div>
+
+  <!-- PAST ENTRIES -->
+  <div class="entries-header">
+    📖 Past Entries
+    <span class="entry-count">{{ entries|length }}</span>
+  </div>
+
+  {% if entries %}
+    {% for entry in entries %}
+    <div class="entry-card">
+      <form action="/delete/{{ entry.id }}" method="POST" style="display:inline"
+            onsubmit="return confirm('Delete this entry?')">
+        <button class="delete-btn" type="submit" title="Delete">🗑</button>
+      </form>
+
+      <div class="entry-meta">
+        <span class="entry-date">{{ entry.display_date }}</span>
+        <span class="entry-time">{{ entry.time }}</span>
+      </div>
+
+      <div class="entry-title">{{ entry.title }}</div>
+
+      <div class="entry-text collapsed" id="text-{{ entry.id }}">{{ entry.text }}</div>
+      <button class="read-more" onclick="toggleExpand('text-{{ entry.id }}', this)">Read more</button>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <div>🌸</div>
+      <p>No entries yet. Write your first one above!</p>
+    </div>
+  {% endif %}
+
+</div>
+
+<script>
+  // Live date
+  const d = new Date();
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('datePill').textContent =
+    `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
+
+  // Expand/collapse long entries
+  function toggleExpand(id, btn) {
+    const el = document.getElementById(id);
+    if (el.classList.contains('collapsed')) {
+      el.classList.remove('collapsed');
+      btn.textContent = 'Show less';
+    } else {
+      el.classList.add('collapsed');
+      btn.textContent = 'Read more';
+    }
+  }
+</script>
+</body>
+</html>
