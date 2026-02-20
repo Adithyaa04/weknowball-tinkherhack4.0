@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gentle Reminders — AlzHelper</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #FDF6EC;
+    --warm: #F5E6D0;
+    --peach: #F2C9A0;
+    --coral: #E8956D;
+    --rust: #C4614A;
+    --brown: #7A4030;
+    --sage: #8FAF8A;
+    --sage-dark: #5C7A57;
+    --text: #3A2820;
+    --text-soft: #7A5A50;
+    --shadow: rgba(100,50,30,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 15%, rgba(242,201,160,0.3) 0%, transparent 50%),
+      radial-gradient(circle at 85% 85%, rgba(143,175,138,0.2) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .app {
+    position: relative; z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 30px 20px 100px;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 36px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 14px; }
+
+  .logo {
+    width: 54px; height: 54px;
+    background: linear-gradient(135deg, var(--sage), var(--sage-dark));
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 4px 16px rgba(92,122,87,0.3);
+  }
+
+  .header-title h1 { font-size: 1.6rem; font-weight: 900; color: var(--brown); }
+  .header-title p { font-family: 'Lora', serif; font-style: italic; font-size: 0.88rem; color: var(--text-soft); }
+
+  .date-pill {
+    background: white;
+    border: 2px solid var(--peach);
+    border-radius: 50px;
+    padding: 8px 18px;
+    font-size: 0.85rem; font-weight: 700;
+    color: var(--rust);
+  }
+
+  .section-header {
+    font-size: 1.1rem; font-weight: 800;
+    color: var(--brown); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .reminder-count {
+    background: var(--warm); color: var(--sage-dark);
+    border-radius: 20px; padding: 2px 10px;
+    font-size: 0.78rem; font-weight: 800;
+  }
+
+  /* TODAY CARD */
+  .today-card {
+    background: white;
+    border-radius: 24px;
+    padding: 24px 28px;
+    box-shadow: 0 4px 28px var(--shadow);
+    margin-bottom: 32px;
+    border: 2px solid rgba(143,175,138,0.35);
+    animation: fadeUp 0.6s 0.15s ease both;
+  }
+
+  .today-card-header {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .today-label {
+    font-size: 1rem; font-weight: 800;
+    color: var(--sage-dark);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .progress-wrap { display: flex; align-items: center; gap: 10px; }
+  .progress-text { font-size: 0.78rem; font-weight: 700; color: var(--text-soft); }
+  .progress-bar { width: 90px; height: 8px; background: var(--warm); border-radius: 50px; overflow: hidden; }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--sage), var(--sage-dark));
+    border-radius: 50px;
+  }
+
+  /* REMINDER ITEMS */
+  .reminder-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+  .reminder-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 14px 16px;
+    background: var(--cream);
+    border-radius: 14px;
+    border: 2px solid transparent;
+    transition: all 0.25s ease;
+    position: relative;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .reminder-item:hover { border-color: var(--peach); background: #FFF8F0; }
+
+  .reminder-item.done { opacity: 0.55; background: #F7F7F7; }
+  .reminder-item.done .reminder-text { text-decoration: line-through; color: var(--text-soft); }
+
+  .check-circle {
+    width: 26px; height: 26px; min-width: 26px;
+    border-radius: 50%;
+    border: 2.5px solid var(--peach);
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+    margin-top: 1px;
+  }
+
+  .reminder-item.done .check-circle {
+    background: var(--sage); border-color: var(--sage-dark); color: white;
+  }
+
+  .reminder-body { flex: 1; }
+  .reminder-text { font-size: 0.97rem; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .reminder-time { font-size: 0.78rem; font-weight: 600; color: var(--coral); }
+  .reminder-icon { font-size: 1.2rem; margin-top: 1px; }
+
+  .item-actions { display: flex; gap: 6px; position: absolute; top: 10px; right: 12px; opacity: 0; transition: opacity 0.2s; }
+  .reminder-item:hover .item-actions { opacity: 1; }
+
+  .action-btn {
+    background: none; border: none;
+    font-size: 0.9rem; cursor: pointer;
+    opacity: 0.4; transition: opacity 0.2s;
+    color: var(--rust);
+  }
+
+  .action-btn:hover { opacity: 1; }
+
+  /* PAST */
+  .past-section { animation: fadeUp 0.6s 0.3s ease both; }
+
+  .past-reminder-card {
+    background: white; border-radius: 20px;
+    padding: 20px 24px; margin-bottom: 14px;
+    box-shadow: 0 2px 18px var(--shadow);
+    border-left: 4px solid var(--sage);
+  }
+
+  .past-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .past-date { font-size: 0.78rem; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.5px; }
+  .past-stats { font-size: 0.75rem; font-weight: 700; color: var(--sage-dark); }
+
+  .past-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+
+  .past-item { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); font-weight: 600; }
+  .past-item.done-item { text-decoration: line-through; color: var(--text-soft); }
+  .past-dot { width: 8px; height: 8px; border-radius: 50%; min-width: 8px; background: var(--sage); }
+  .past-dot.undone { background: var(--peach); }
+
+  /* FLOATING ADD */
+  .fab {
+    position: fixed; bottom: 32px; right: 32px;
+    width: 62px; height: 62px;
+    background: linear-gradient(135deg, var(--sage), var(--sage-dark));
+    border: none; border-radius: 50%;
+    font-size: 1.8rem; color: white; cursor: pointer;
+    box-shadow: 0 6px 24px rgba(92,122,87,0.45);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    z-index: 100;
+  }
+
+  .fab:hover { transform: scale(1.08) translateY(-2px); }
+  .fab.open { background: linear-gradient(135deg, var(--rust), var(--brown)); transform: rotate(45deg); }
+
+  /* MODAL */
+  .modal-backdrop {
+    display: none; position: fixed; inset: 0;
+    background: rgba(58,40,32,0.35);
+    backdrop-filter: blur(4px);
+    z-index: 200; align-items: flex-end;
+    justify-content: center; padding-bottom: 110px;
+  }
+
+  .modal-backdrop.active { display: flex; animation: fadeIn 0.2s ease both; }
+
+  .modal {
+    background: white; border-radius: 28px; padding: 28px;
+    width: 100%; max-width: 680px;
+    box-shadow: 0 16px 60px rgba(58,40,32,0.25);
+    animation: slideUp 0.3s ease both;
+  }
+
+  .modal h2 { font-size: 1.1rem; font-weight: 800; color: var(--brown); margin-bottom: 18px; }
+
+  .modal-row { display: flex; gap: 12px; margin-bottom: 12px; }
+
+  .modal-input {
+    flex: 1; border: 2px solid var(--warm); border-radius: 14px;
+    padding: 12px 16px;
+    font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 700;
+    color: var(--text); background: var(--cream); outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .modal-input:focus { border-color: var(--sage); }
+  .modal-input::placeholder { color: var(--text-soft); font-weight: 400; }
+  .modal-input.time-input { flex: 0 0 130px; color: var(--coral); }
+
+  .emoji-label { font-size: 0.8rem; font-weight: 700; color: var(--text-soft); margin-bottom: 8px; }
+
+  .emoji-picker { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+
+  .emoji-btn {
+    width: 38px; height: 38px;
+    border: 2px solid var(--warm); border-radius: 10px;
+    background: var(--cream); font-size: 1.1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .emoji-btn:hover, .emoji-btn.selected {
+    border-color: var(--sage); background: rgba(143,175,138,0.15); transform: scale(1.1);
+  }
+
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+  .cancel-btn {
+    background: var(--warm); color: var(--brown); border: none;
+    border-radius: 50px; padding: 11px 24px;
+    font-size: 0.95rem; font-weight: 800; font-family: 'Nunito', sans-serif;
+    cursor: pointer; transition: background 0.15s;
+  }
+
+  .cancel-btn:hover { background: var(--peach); }
+
+  .add-btn {
+    background: linear-gradient(135deg, var(--sage), var(--sage-dark));
+    color: white; border: none; border-radius: 50px; padding: 11px 28px;
+    font-size: 0.95rem; font-weight: 800; font-family: 'Nunito', sans-serif;
+    cursor: pointer; box-shadow: 0 4px 16px rgba(92,122,87,0.35);
+    transition: transform 0.15s;
+  }
+
+  .add-btn:hover { transform: translateY(-2px); }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--text-soft); }
+  .empty-state div:first-child { font-size: 2.5rem; margin-bottom: 10px; }
+  .empty-state p { font-family: 'Lora', serif; font-style: italic; font-size: 1rem; }
+
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  @keyframes slideUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="header-left">
+      <div class="logo">🔔</div>
+      <div class="header-title">
+        <h1>Gentle Reminders</h1>
+        <p>Your day at a glance</p>
+      </div>
+    </div>
+    <div class="date-pill" id="datePill">Today</div>
+  </header>
+
+  <!-- TODAY -->
+  <div class="section-header">
+    ☀️ Today's Reminders
+    <span class="reminder-count">{{ today|length }}</span>
+  </div>
+
+  <div class="today-card">
+    <div class="today-card-header">
+      <div class="today-label">🌿 Tap a reminder to mark it done</div>
+      <div class="progress-wrap">
+        {% set done_count = today|selectattr('done')|list|length %}
+        <span class="progress-text">{{ done_count }} / {{ today|length }}</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ ((done_count / today|length * 100) if today|length > 0 else 0)|int }}%"></div>
+        </div>
+      </div>
+    </div>
+
+    {% if today %}
+      <ul class="reminder-list">
+        {% for r in today|sort(attribute='time') %}
+        <li class="reminder-item {{ 'done' if r.done else '' }}">
+          <form action="/reminders/toggle/{{ r.id }}" method="POST" style="margin:0">
+            <button type="submit" class="check-circle" style="cursor:pointer; border:none; background:none; padding:0; width:26px; height:26px; border-radius:50%; border: 2.5px solid var(--peach); background:white; display:flex; align-items:center; justify-content:center;">
+              {{ '✓' if r.done else '' }}
+            </button>
+          </form>
+          <div class="reminder-body">
+            <div class="reminder-text">{{ r.text }}</div>
+            {% if r.time %}
+            <div class="reminder-time">⏰ {{ r.time }}</div>
+            {% endif %}
+          </div>
+          <div class="reminder-icon">{{ r.icon }}</div>
+          <div class="item-actions">
+            <form action="/reminders/delete/{{ r.id }}" method="POST"
+                  onsubmit="return confirm('Remove this reminder?')">
+              <button class="action-btn" type="submit">🗑</button>
+            </form>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="empty-state">
+        <div>🌸</div>
+        <p>No reminders for today yet. Add one below!</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- PAST -->
+  <div class="section-header past-section">
+    📋 Past Days
+    <span class="reminder-count" style="background:#e8f0e7;">{{ past|length }}</span>
+  </div>
+
+  <div class="past-section">
+    {% if past %}
+      {% for date_str, info in past.items() %}
+      <div class="past-reminder-card">
+        <div class="past-meta">
+          <span class="past-date">{{ info.display }}</span>
+          <span class="past-stats">
+            {{ info.reminders|selectattr('done')|list|length }}/{{ info.reminders|length }} done
+          </span>
+        </div>
+        <ul class="past-list">
+          {% for r in info.reminders|sort(attribute='time') %}
+          <li class="past-item {{ 'done-item' if r.done else '' }}">
+            <div class="past-dot {{ '' if r.done else 'undone' }}"></div>
+            {{ r.icon }} {{ r.text }}
+            {% if r.time %}<span style="color:var(--text-soft);font-size:0.8rem;margin-left:4px">• {{ r.time }}</span>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty-state">
+        <div>📅</div>
+        <p>No past reminders recorded.</p>
+      </div>
+    {% endif %}
+  </div>
+
+</div>
+
+<!-- FLOATING ADD BUTTON -->
+<button class="fab" id="fabBtn">+</button>
+
+<!-- ADD MODAL -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <h2>🔔 Add a Reminder</h2>
+    <form action="/reminders/add" method="POST" id="addForm">
+      <div class="modal-row">
+        <input class="modal-input" type="text" name="text" id="inputText"
+               placeholder="What do you need to remember?" maxlength="100" required/>
+        <input class="modal-input time-input" type="time" name="time" id="inputTime"/>
+      </div>
+      <input type="hidden" name="icon" id="selectedIcon" value="🔔"/>
+      <div class="emoji-label">Choose an icon:</div>
+      <div class="emoji-picker" id="emojiPicker"></div>
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+        <button type="submit" class="add-btn">✅ Add Reminder</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const EMOJIS = ['🏥','💊','🚶','🍽️','🛁','📞','💧','🛏️','👨‍👩‍👧','🏋️','🧘','🌳','🛒','📖','✉️','🎵'];
+  let selectedEmoji = '🔔';
+
+  // Build emoji picker
+  const picker = document.getElementById('emojiPicker');
+  EMOJIS.forEach(e => {
+    const btn = document.createElement('button');
+    btn.className = 'emoji-btn';
+    btn.textContent = e;
+    btn.type = 'button';
+    btn.addEventListener('click', () => {
+      selectedEmoji = e;
+      document.getElementById('selectedIcon').value = e;
+      document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    });
+    picker.appendChild(btn);
+  });
+
+  // Modal open/close
+  const fab = document.getElementById('fabBtn');
+  const backdrop = document.getElementById('modalBackdrop');
+  const cancelBtn = document.getElementById('cancelBtn');
+
+  fab.addEventListener('click', () => {
+    backdrop.classList.toggle('active');
+    fab.classList.toggle('open');
+    if (backdrop.classList.contains('active')) document.getElementById('inputText').focus();
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    backdrop.classList.remove('active');
+    fab.classList.remove('open');
+  });
+
+  backdrop.addEventListener('click', e => {
+    if (e.target === backdrop) {
+      backdrop.classList.remove('active');
+      fab.classList.remove('open');
+    }
+  });
+
+  // Live date
+  const d = new Date();
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('datePill').textContent = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
+
+  // Default time to next hour
+  const now = new Date();
+  now.setMinutes(0,0,0);
+  now.setHours(now.getHours() + 1);
+  document.getElementById('inputTime').value = `${String(now.getHours()).padStart(2,'0')}:00`;
+</script>
+</body>
+</html>

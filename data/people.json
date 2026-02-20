@@ -40,5 +40,19 @@
         "time": "11:14 PM"
       }
     ]
+  },
+  {
+    "id": 4,
+    "name": "Dumbaa",
+    "relation": "Family friend",
+    "tidbit": "Procrastinates alot",
+    "last_visit": "Friday, 20 February 2026",
+    "conversations": [
+      {
+        "note": "We talked alot about pdfs. i strongly believe he is in the epstiens files",
+        "date": "Friday, 20 February 2026",
+        "time": "11:43 PM"
+      }
+    ]
   }
 ]

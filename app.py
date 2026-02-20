@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from diary import add_entry, get_all_entries, delete_entry
 from people import get_all_people, add_person, get_person, add_conversation, delete_person
+from reminders import get_today_reminders, get_past_reminders, add_reminder, toggle_reminder, delete_reminder
 
 app = Flask(__name__)
 
@@ -28,8 +29,7 @@ def delete(entry_id):
 
 @app.route("/people")
 def people():
-    all_people = get_all_people()
-    return render_template("people.html", people=all_people)
+    return render_template("people.html", people=get_all_people())
 
 @app.route("/people/add", methods=["POST"])
 def add_person_route():
@@ -58,6 +58,33 @@ def add_note(person_id):
 def delete_person_route(person_id):
     delete_person(person_id)
     return redirect(url_for("people"))
+
+# ── REMINDERS ROUTES ──────────────────────────────────────────
+
+@app.route("/reminders")
+def reminders():
+    return render_template("reminders.html",
+                           today=get_today_reminders(),
+                           past=get_past_reminders())
+
+@app.route("/reminders/add", methods=["POST"])
+def add_reminder_route():
+    text = request.form.get("text", "").strip()
+    time = request.form.get("time", "").strip()
+    icon = request.form.get("icon", "🔔").strip()
+    if text:
+        add_reminder(text, time, icon)
+    return redirect(url_for("reminders"))
+
+@app.route("/reminders/toggle/<reminder_id>", methods=["POST"])
+def toggle_reminder_route(reminder_id):
+    toggle_reminder(reminder_id)
+    return redirect(url_for("reminders"))
+
+@app.route("/reminders/delete/<reminder_id>", methods=["POST"])
+def delete_reminder_route(reminder_id):
+    delete_reminder(reminder_id)
+    return redirect(url_for("reminders"))
 
 if __name__ == "__main__":
     app.run(debug=True)
