@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img.png" alt="Project Banner" width="100%">
+  <img src="facerec/img.png" alt="Project Banner" width="100%">
 </p>
 
 # ഓർമ്മ-Remembrance
@@ -158,6 +158,7 @@ PATIENT SIDE                          CAREGIVER SIDE
 
 ### Video
 https://drive.google.com/file/d/1kIHS6YLy6Wyp3YBWk3qhAiYnjsM-5fIU/view?usp=drivesdk
+https://drive.google.com/file/d/1q5VePDA6pUEuKCEz5pRjnJYRrJ-8G4Wa/view?usp=drivesdk
 
 ## AI Tools Used 
 **Tool Used:** VS code, GitHub,ChatGpt,Gemini,Ngrok(For deployment).
