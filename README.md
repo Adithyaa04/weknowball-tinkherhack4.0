@@ -20,10 +20,10 @@ https://aerotropic-nonabstractly-tona.ngrok-free.dev/
 
 ### The Problem statement
 Over 55 million people worldwide live with dementia, facing the same quiet crisis every day — a familiar face without a name, a missed appointment, a routine that simply won't stick. Caregivers carry this burden silently, answering the same questions repeatedly with no tools built to help them. Existing apps are generic, cluttered, and designed for everyone except the people who need them most.
-ഓർമ്മ changes that. With face recognition that puts names back to faces, a personal diary to capture each day, a My People directory of everyone who matters, and Gentle Reminders for medications and appointments all wrapped in a calm, accessible design — Recall gives Alzheimer's patients a quiet, reassuring companion that keeps their world from feeling lost.
+ഓർമ്മ changes that. With face recognition that puts names back to faces, a personal diary to capture each day, a My People directory of everyone who matters, and Gentle Reminders for medications and appointments all wrapped in a calm, accessible design. ഓർമ്മ gives Alzheimer's patients a quiet, reassuring companion that keeps their world from feeling lost.
 
 ### The Solution
- ഓർമ്മ is a facial recognition-based memory aid designed for Alzheimer's patients, built using OpenCV's LBPH algorithm trained on locally collected face data. When a face is detected through the live camera feed, the app identifies the person and displays their name and relation to the patient — helping them recognise family members, doctors, and caregivers. The system is entirely offline, ensuring patient privacy, and is complemented by a diary, reminders, and a personal people directory, all accessible through a single Flask-powered web interface.
+ ഓർമ്മ is a facial recognition-based memory aid designed for Alzheimer's patients, built using OpenCV's LBPH algorithm trained on locally collected face data. When a face is detected through the live camera feed, the app identifies the person and displays their name and relation to the patient, helping them recognise family members, doctors, and caregivers. The system is entirely offline, ensuring patient privacy, and is complemented by a diary, reminders, and a personal people directory, all accessible through a single Flask-powered web interface.
 
 ## Technical Details
 
